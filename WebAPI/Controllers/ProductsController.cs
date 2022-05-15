@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Business.Abstract;
 using Business.Concrete;
 using DataAccess.Concrete.EntityFramework;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebAPI.Controllers
 {
@@ -25,6 +26,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet("getall")]
+        [Authorize(Roles = "Product.List")] // burada admin, editor gibi roller de verilebilir
         public IActionResult GetAll()
         {
            

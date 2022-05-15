@@ -39,6 +39,10 @@ namespace WebAPI
             //services.AddSingleton<IProductService,ProductManager>(); // içerisinde data tutmuyosa singleton kullanýyoruz
             //// bu þu demek biri contructor da IProductService isterse ona ProductManager newi ver
             //services.AddSingleton<IProductDal, EfProductDal>();
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowOrigin", builder => builder.WithOrigins("http://localhost:3000"));
+            });
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
@@ -70,13 +74,15 @@ namespace WebAPI
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseCors(builder => builder.WithOrigins("http://localhost:3000").AllowAnyHeader());
+
             app.UseHttpsRedirection();
 
             app.UseRouting();
 
-            app.UseAuthentication();
+            app.UseAuthentication(); // girilen yerin içinde ne yapýlabilir (yetki)
 
-            app.UseAuthorization();
+            app.UseAuthorization(); // bir yere girmek için anahtar
 
             app.UseEndpoints(endpoints =>
             {

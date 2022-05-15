@@ -28,7 +28,7 @@ namespace WebAPI.Controllers
                 return BadRequest(userToLogin.Message);
             }
 
-            var result = _authService.CreateAccessToken(userToLogin.Data);
+            var result = _authService.CreateAccessToken(userToLogin.Data); // burada verdiğimiz parametre bir user
             if (result.Success)
             {
                 return Ok(result.Data);
@@ -40,7 +40,7 @@ namespace WebAPI.Controllers
         [HttpPost("register")]
         public ActionResult Register(UserForRegisterDto userForRegisterDto)
         {
-            var userExists = _authService.UserExists(userForRegisterDto.Email);
+            var userExists = _authService.UserExists(userForRegisterDto.Email); // kullanıcı var mı bakıyorum
             if (!userExists.Success)
             {
                 return BadRequest(userExists.Message);

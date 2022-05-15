@@ -7,7 +7,7 @@ namespace Core.Utilities.Security.Hashing
 {
    public  class HashingHelper // hash oluşturmaya ve onu doğrulamaya yarıyor
     {
-        public static void CreatePasswordHash(string password,out byte[] passwordHash, out byte[] passwordSalt) 
+        public static void CreatePasswordHash(string password,out byte[] passwordHash, out byte[] passwordSalt) // out parametreyi gönderdiğimizde değişen nesneyi arraye aktarılmasını sağlıycak
         {
             using (var hmac = new System.Security.Cryptography.HMACSHA512())
             {

@@ -25,7 +25,7 @@ namespace Business.Concrete
         public IDataResult<User> Register(UserForRegisterDto userForRegisterDto, string password)
         {
             byte[] passwordHash, passwordSalt;
-            HashingHelper.CreatePasswordHash(password, out passwordHash, out passwordSalt);
+            HashingHelper.CreatePasswordHash(password, out passwordHash, out passwordSalt);// biz boş gönderiyoruz o bize oluşan değerli dönüyo passwordler için
             var user = new User
             {
                 Email = userForRegisterDto.Email,
@@ -33,33 +33,33 @@ namespace Business.Concrete
                 LastName = userForRegisterDto.LastName,
                 PasswordHash = passwordHash,
                 PasswordSalt = passwordSalt,
-                Status = true
+                Status = true // mail doğrulaması gibi şeyler isteyeceksek burayı false yaparız
             };
             _userService.Add(user);
-            return new SuccessDataResult<User>(user, "kayıt oldu");
+            return new SuccessDataResult<User>(user, Messages.UserRegistered);
         }
 
         public IDataResult<User> Login(UserForLoginDto userForLoginDto)
         {
             var userToCheck = _userService.GetByMail(userForLoginDto.Email);
-            if (userToCheck == null)
+            if (userToCheck == null) // kullanıcı var mı diye maille bakıyoruz
             {
-                return new ErrorDataResult<User>("kullanıcı bulunamadı");
+                return new ErrorDataResult<User>(Messages.UserNotFound);
             }
 
             if (!HashingHelper.VerifyPasswordHash(userForLoginDto.Password, userToCheck.PasswordHash, userToCheck.PasswordSalt))
             {
-                return new ErrorDataResult<User>("parola hatası");
+                return new ErrorDataResult<User>(Messages.PasswordError);
             }
 
-            return new SuccessDataResult<User>(userToCheck, "başarılı giriş");
+            return new SuccessDataResult<User>(userToCheck, Messages.SuccessfulLogin);
         }
 
         public IResult UserExists(string email)
         {
             if (_userService.GetByMail(email) != null)
             {
-                return new ErrorResult("kullanıcı mevcut");
+                return new ErrorResult(Messages.UserAlreadyExists);
             }
             return new SuccessResult();
         }
@@ -68,7 +68,7 @@ namespace Business.Concrete
         {
             var claims = _userService.GetClaims(user);
             var accessToken = _tokenHelper.CreateToken(user, claims);
-            return new SuccessDataResult<AccessToken>(accessToken,"token oluşturuldu");
+            return new SuccessDataResult<AccessToken>(accessToken,Messages.AccessTokenCreated);
         }
     }
 }
