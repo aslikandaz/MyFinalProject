@@ -26,7 +26,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet("getall")]
-        [Authorize(Roles = "Product.List")] // burada admin, editor gibi roller de verilebilir
+        //[Authorize(Roles = "Product.List")] // burada admin, editor gibi roller de verilebilir
         public IActionResult GetAll()
         {
            
